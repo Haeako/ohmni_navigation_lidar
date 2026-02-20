@@ -1,8 +1,0 @@
-prefix=/home/ws/devel
-
-Name: navigate
-Description: Description of navigate
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

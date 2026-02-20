@@ -1,2 +1,0 @@
-navigate:rplidar_ros
--DCATKIN_DEVEL_PREFIX=/home/ws/devel -DCMAKE_INSTALL_PREFIX=/home/ws/install -G Unix Makefiles
