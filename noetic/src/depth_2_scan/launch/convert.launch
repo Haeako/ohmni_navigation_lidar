@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<launch>
+    <include file="$(find depthai_ros_driver)/launch/camera.launch">
+        <arg name="params_file" value="$(find depth_2_scan)/config/oak-d_config.yaml"/>
+        <!-- Override config -->
+        <!--Turn off point cloud, RGB, infra, IMU-->
+        <arg name="enable_pointcloud" value="false"/>
+
+        <arg name="enable_infra1" value="false"/>
+        <arg name="enable_infra2" value="false"/>
+
+        <!-- 2D- navigation, we can turn off publish tf for save computational resource -->
+        <arg name="publish_tf_from_calibration" value="false"/>
+
+    </include>
+    <!-- DepthImageToLaserScan node -->
+    <node pkg="depthimage_to_laserscan"
+            type="depthimage_to_laserscan"
+            name="depth_to_scan">
+
+        <remap from="image" to="/oak/stereo/image_raw"/>
+        <remap from="camera_info" to="/oak/stereo/camera_info"/>
+
+        <param name="scan_height" value="500"/>
+        <param name="range_min" value="0.1"/>
+        <param name="range_max" value="4.0"/>
+        <param name="scan_time" value="0.066"/>
+        <param name="output_frame_id" value="oak"/>
+
+    </node>
+
+</launch>

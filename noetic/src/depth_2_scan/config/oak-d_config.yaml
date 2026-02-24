@@ -1,0 +1,7 @@
+/oak:
+  camera_i_nn_type: none
+  rgb_i_disable_node: true
+  right_i_publish_topic: true
+  stereo_i_align_depth: false
+  stereo_i_fps: 15
+  rgb_i_publish_topic : false
