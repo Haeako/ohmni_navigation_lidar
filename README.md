@@ -1,8 +1,32 @@
-# **Ohmni Robot LiDAR Navigation Setup (ROS Melodic)**
+# Ohmni Robot LiDAR Navigation (ROS Melodic)
 
-This guide documents how to run LiDAR-based autonomous navigation on the **Ohmni Robot** using **ROS Melodic** and the Ohmni ROS Docker environment.
-It includes environment setup, required commands, launch flow, and common issues.
+**Demo:** https://youtu.be/4BeLU4TtMhs
 
+## Overview
+
+This project implements a **ROS-based autonomous navigation system** for the **Ohmni Robot** using a **2D LiDAR** sensor. It integrates **SLAM, localization, and path planning** to enable reliable indoor autonomous navigation.
+The repository provides the complete setup for running the navigation stack inside the **Ohmni ROS Docker environment**, including configuration files, launch procedures, and troubleshooting notes.
+
+## Features
+* ROS Melodic-based navigation pipeline
+* 2D LiDAR integration
+* SLAM using Gmapping
+* Localization with AMCL
+* Autonomous path planning using the ROS Navigation Stack
+* Occupancy grid mapping and TF management
+* Docker-based deployment for the Ohmni platform
+
+## Technologies
+* ROS Melodic
+* Ubuntu
+* C++
+* Python
+* LiDAR
+* Gmapping
+* AMCL
+* Move Base
+* RViz
+* Docker
 ---
 
 ## **1. System Requirements**
