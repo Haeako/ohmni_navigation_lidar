@@ -1,17 +1,28 @@
 <launch>
-    <include file="$(find rplidar_ros)/launch/rplidar_a1.launch"/>
-    
-    <node pkg="tf" type="static_transform_publisher" name="base_to_laser_broadcast"
-        args="0 0 0 0 0 0 base_link laser 100"/>
+	<arg name="map_name" default="aiclub"/>
+	<arg name="map_output" default="$(find navigate)/map/$(arg map_name)/$(arg map_name)"/>
+	<arg name="scan_topic" default="scan"/>
+	<arg name="odom_topic" default="odom"/>
+	<arg name="base_frame" default="base_link"/>
 
-    <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
-        <remap from="scan" to="scan"/>
-        <remap from="odom" to="odom"/>
-        <param name="delta"     value="0.1"/>
-        <param name="xmin"      value="-20.0"/>
-        <param name="xmax"      value="20.0"/>
-        <param name="ymin"      value="-20.0"/>
-        <param name="ymax"      value="20.0"/>
-        <param name="particles" value="30"/>
-    </node>
+	<include file="$(find rplidar_ros)/launch/rplidar_a1.launch"/>
+	<node pkg="tf" type="static_transform_publisher" name="base_to_laser_broadcast"
+		args="0 0 0 0 0 0 $(arg base_frame) laser 100"/>
+	<!-- Gmapping node /map -->
+	<node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
+		<param name="base_frame" value="$(arg base_frame)"/>
+		<param name="odom_frame" value="odom"/>
+		<param name="map_frame" value="map"/>
+		<remap from="scan" to="$(arg scan_topic)"/>
+		<remap from="odom" to="$(arg odom_topic)"/>
+	</node> 
+
+	<!--
+	When the map is ready, save it from another shell:
+	rosrun map_server map_saver -f $(arg map_output)
+
+	Example output:
+	$(find navigate)/map/aiclub/aiclub.yaml
+	$(find navigate)/map/aiclub/aiclub.pgm
+	-->
 </launch>

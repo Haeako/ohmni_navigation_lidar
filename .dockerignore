@@ -1,0 +1,6 @@
+.git
+docker/.env
+noetic
+**/build
+**/devel
+**/.catkin_tools

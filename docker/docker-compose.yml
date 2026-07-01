@@ -1,0 +1,25 @@
+services:
+  melodic:
+    image: haeako/aiclub_ohmni:dev
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: melodic
+    restart: unless-stopped
+    network_mode: host
+    privileged: true
+    stdin_open: true
+    tty: true
+    environment:
+      ROS_IP: ${ROS_IP:?Set ROS_IP to the robot IP address}
+      ROS_MASTER_URI: ${ROS_MASTER_URI:?Set ROS_MASTER_URI, for example http://ROBOT_IP:11311}
+      OHMNI_WS: /home/ohmni_navigation_lidar/melodic
+      MAP_NAME: ${MAP_NAME:-aiclub}
+      BASE_FRAME: ${BASE_FRAME:-base_link}
+      ODOM_FRAME: ${ODOM_FRAME:-odom}
+      SCAN_TOPIC: ${SCAN_TOPIC:-scan}
+      ODOM_TOPIC: ${ODOM_TOPIC:-odom}
+    volumes:
+      - /dev:/dev
+      - ../melodic:/home/ohmni_navigation_lidar/melodic
+    command: ["tail", "-f", "/dev/null"]

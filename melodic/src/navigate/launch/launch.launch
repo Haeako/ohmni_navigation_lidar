@@ -1,12 +1,33 @@
 <launch>
+    <arg name="map_name" default="aiclub"/>
+    <arg name="map_file" default="$(find navigate)/map/$(arg map_name)/$(arg map_name).yaml"/>
+    <arg name="base_frame" default="base_link"/>
+    <arg name="odom_frame" default="odom"/>
+    <arg name="scan_topic" default="scan"/>
+    <arg name="odom_topic" default="odom"/>
+
+    <include file="$(find rplidar_ros)/launch/rplidar_a1.launch"/>
+
     <node pkg="tf" type="static_transform_publisher" name="base_to_laser_broadcast"
-        args="0 0 0 0 0 0 base_link laser 100"/>
+        args="0 0 0 0 0 0 $(arg base_frame) laser 100"/>
 
  <!--- Run the map server --> 
-    <node name="map_server" pkg="map_server" type="map_server" args="$(find navigate)/map/aiclub.yaml"/>
+    <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)"/>
 
  <!--- Run AMCL --> 
-    <include file="$(find amcl)/examples/amcl_diff.launch" />
+    <node pkg="amcl" type="amcl" name="amcl" output="screen">
+        <param name="odom_frame_id" value="$(arg odom_frame)"/>
+        <param name="base_frame_id" value="$(arg base_frame)"/>
+        <param name="global_frame_id" value="map"/>
+        <param name="use_map_topic" value="true"/>
+        <param name="transform_tolerance" value="1.0"/>
+        <param name="min_particles" value="500"/>
+        <param name="max_particles" value="2000"/>
+        <param name="update_min_d" value="0.2"/>
+        <param name="update_min_a" value="0.5"/>
+        <remap from="scan" to="$(arg scan_topic)"/>
+        <remap from="odom" to="$(arg odom_topic)"/>
+    </node>
 
    <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
     <remap from="cmd_vel" to="/tb_cmd_vel"/>   
